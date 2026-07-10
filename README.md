@@ -63,7 +63,7 @@ npx prisma migrate dev --name init
 npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000).
+Acesse [http://localhost:3001](http://localhost:3001).
 
 ## Estrutura de planos
 
@@ -91,7 +91,7 @@ nenhum dado dos planetas bloqueados.
    - `NEXT_PUBLIC_STRIPE_PRICE_MISTICO`
 4. Para testar o webhook localmente, use a Stripe CLI:
    ```bash
-   stripe listen --forward-to localhost:3000/api/stripe/webhook
+   stripe listen --forward-to localhost:3001/api/stripe/webhook
    ```
    e copie o `whsec_...` gerado para `STRIPE_WEBHOOK_SECRET`.
 
