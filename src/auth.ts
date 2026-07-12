@@ -7,6 +7,10 @@ import { prisma } from "@/lib/prisma";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
+  // Permite acesso via IP da rede local e via domínios de túnel (ex: Cloudflare
+  // Tunnel/trycloudflare.com) em dev, onde o host da requisição não bate com
+  // NEXTAUTH_URL. Nunca desative isso em produção sem um proxy confiável na frente.
+  trustHost: true,
   pages: {
     signIn: "/login",
   },

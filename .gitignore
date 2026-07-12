@@ -40,6 +40,9 @@ yarn-error.log*
 # claude code runtime artifacts
 .claude/scheduled_tasks.lock
 
+# screenshots gerados para uso externo (LinkedIn etc.), nao fazem parte do codigo
+/screenshots-linkedin/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

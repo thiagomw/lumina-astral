@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth, signOut } from "@/auth";
 import { ButtonLink } from "@/components/ui/Button";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 
 const navLinks = [
   { href: "/#como-funciona", label: "Como funciona" },
@@ -9,6 +10,12 @@ const navLinks = [
 
 export async function Header() {
   const session = await auth();
+  const isLoggedIn = !!session?.user;
+
+  async function handleSignOut() {
+    "use server";
+    await signOut({ redirectTo: "/" });
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-md">
@@ -29,18 +36,13 @@ export async function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          {session?.user ? (
+        <div className="hidden items-center gap-3 md:flex">
+          {isLoggedIn ? (
             <>
               <ButtonLink href="/dashboard" variant="secondary" className="!px-4 !py-2 text-xs">
                 Meu mapa
               </ButtonLink>
-              <form
-                action={async () => {
-                  "use server";
-                  await signOut({ redirectTo: "/" });
-                }}
-              >
+              <form action={handleSignOut}>
                 <button className="text-xs text-foreground/60 hover:text-foreground transition">
                   Sair
                 </button>
@@ -50,7 +52,7 @@ export async function Header() {
             <>
               <Link
                 href="/login"
-                className="hidden text-sm text-foreground/70 hover:text-foreground sm:block"
+                className="text-sm text-foreground/70 hover:text-foreground"
               >
                 Entrar
               </Link>
@@ -59,6 +61,16 @@ export async function Header() {
               </ButtonLink>
             </>
           )}
+        </div>
+
+        <div className="flex items-center gap-2 md:hidden">
+          <ButtonLink
+            href={isLoggedIn ? "/dashboard" : "/cadastro"}
+            className="!px-4 !py-2 text-xs"
+          >
+            {isLoggedIn ? "Meu mapa" : "Criar conta"}
+          </ButtonLink>
+          <MobileMenu navLinks={navLinks} isLoggedIn={isLoggedIn} onSignOut={handleSignOut} />
         </div>
       </div>
     </header>
