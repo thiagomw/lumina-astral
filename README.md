@@ -162,8 +162,16 @@ npx prisma studio # explorar o banco visualmente
 
 - [x] Produto completo: landing, auth, cálculo astral, dashboard, planos
 - [x] Checkout e webhook Stripe (modo teste)
-- [ ] **DevOps (em andamento)**: containerização de produção, CI/CD, deploy
-      em VPS, domínio próprio, observabilidade — vai virar o próximo case
+- [x] Containerização de produção (Docker multi-stage + docker-compose)
+- [x] Deploy em VPS com domínio próprio e HTTPS (Let's Encrypt)
+- [ ] **CI/CD** (em andamento): deploy automático via GitHub Actions a cada
+      push — hoje ainda é manual via SSH
+- [ ] Observabilidade, backup do banco e Stripe em modo produção
+
+O passo a passo completo do deploy — incluindo os perrengues (disco cheio,
+VPS compartilhada com outros projetos, etc.) — está documentado em
+[`docs/deploy-journey.md`](docs/deploy-journey.md). É o "case #2" da
+série: a jornada de DevOps.
 
 ---
 
