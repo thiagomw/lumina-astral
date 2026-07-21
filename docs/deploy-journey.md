@@ -208,11 +208,49 @@ Retornou `HTTP/1.1 200 OK` com os headers de segurança definidos em
 
 ## O que ainda falta (próximos casos)
 
-- **CI/CD**: hoje o deploy é manual (`git pull` + `docker compose up
-  --build` via SSH). O próximo passo é automatizar isso com GitHub Actions
-  a cada push na `master`.
-- **Observabilidade**: logs centralizados, healthcheck externo, alerta se o
-  site cair.
-- **Backup do Postgres**: hoje os dados vivem só no volume Docker da VPS,
-  sem rotina de backup.
-- **Stripe em produção**: as chaves ainda estão em modo teste/vazias.
+### CI/CD (próximo)
+
+- GitHub Actions builda a imagem Docker a cada push na `master` e publica
+  num registry (GHCR) — o build acontece fora da VPS, que só faz `pull` +
+  restart. Importante: hoje o build é feito na própria VPS via SSH, e foi
+  justamente isso que esgotou o disco no Passo 7 — buildar fora do host
+  evita repetir esse problema.
+- Chave SSH e variáveis de ambiente de produção guardadas como *secrets* do
+  GitHub Actions, nunca hardcoded no workflow.
+
+### Observabilidade
+
+- Logs estruturados, um endpoint de healthcheck exposto, e
+  [Uptime Kuma](https://github.com/louislam/uptime-kuma) para monitoramento
+  externo. Prometheus/Grafana fica como próximo passo *se* houver
+  necessidade real de métricas mais profundas — não faz sentido simular um
+  setup enterprise para um projeto desse tamanho.
+- Rotação de log do Docker (`max-size`/`max-file`): sem isso, logs sem
+  rotação são só mais uma forma de encher o disco de novo — o mesmo modo de
+  falha do Passo 7.
+- Backup do Postgres: hoje os dados vivem só no volume Docker da VPS, sem
+  rotina de backup.
+- Stripe em modo produção: as chaves ainda estão em teste/vazias.
+
+### Infraestrutura como código — migração para uma VPS dedicada
+
+A VPS usada neste deploy é compartilhada com outros três projetos pessoais
+(ver Passo 6) — por isso o próximo salto de infraestrutura não mexe nela,
+e sim provisiona uma **VPS nova, dedicada só ao Lumina Astral**:
+
+- **Terraform** provisiona a VPS do zero (instância, disco, regras de
+  firewall) como código versionado.
+- **cloud-init**, rodando na criação da máquina, instala Docker, cria um
+  usuário non-root e configura firewall básico (`ufw`) — e já desabilita
+  login SSH por senha (só por chave), já que o Terraform gerencia o par de
+  chaves de qualquer forma.
+- Sem Ansible: para um host único, cloud-init + Docker Compose já cobre o
+  que seria necessário de um config management — Ansible entraria se
+  houvesse múltiplos hosts para manter consistentes.
+- **Caddy** como reverse proxy com HTTPS automático — nesta VPS nova isso
+  funciona bem, ao contrário da VPS atual, onde o Caddy chegou a ser
+  cogitado e descartado por brigar com o nginx que já rodava lá (Passo 6).
+- `terraform.tfstate` fica fora do Git (`.gitignore`) mesmo sem backend
+  remoto configurado, já que o repositório é público.
+- Corte final: quando a VPS nova estiver no ar, repontar o domínio DuckDNS
+  para o novo IP e só então desligar a aplicação na VPS antiga.
