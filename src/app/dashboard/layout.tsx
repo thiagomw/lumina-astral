@@ -1,6 +1,12 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+
+export const metadata: Metadata = {
+  title: "Meu mapa astral",
+  robots: { index: false, follow: false },
+};
 
 const abas = [
   { href: "/dashboard", label: "Meu mapa" },

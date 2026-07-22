@@ -14,10 +14,46 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700", "800"],
 });
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3001";
+
+const title = "Lumina Astral — Seu mapa astral, sua jornada";
+const description =
+  "Monte seu mapa astral com precisão astronômica real: Sol, Lua, Ascendente, planetas, casas e aspectos. Sem textos genéricos de signo — cálculo de verdade, numa vibe jovem e mística.";
+
 export const metadata: Metadata = {
-  title: "Lumina Astral — Seu mapa astral, sua jornada",
-  description:
-    "Descubra os segredos do seu mapa astral. Sol, Lua, Ascendente e muito mais, com uma pegada mística e feita para você.",
+  metadataBase: new URL(appUrl),
+  title: {
+    default: title,
+    template: "%s · Lumina Astral",
+  },
+  description,
+  keywords: [
+    "mapa astral",
+    "astrologia",
+    "signo",
+    "ascendente",
+    "mapa astral grátis",
+    "casas astrológicas",
+    "aspectos planetários",
+  ],
+  authors: [{ name: "Thiago Ribeiro" }],
+  openGraph: {
+    title,
+    description,
+    url: "/",
+    siteName: "Lumina Astral",
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

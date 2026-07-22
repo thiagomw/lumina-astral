@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { AuthCard } from "@/components/auth/AuthCard";
 import { RegisterForm } from "@/components/auth/RegisterForm";
+
+export const metadata: Metadata = {
+  title: "Criar conta grátis",
+  robots: { index: false, follow: true },
+};
 
 export default function CadastroPage() {
   return (

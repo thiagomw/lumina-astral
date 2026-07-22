@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PlanCard } from "@/components/plans/PlanCard";
 import { PLANOS } from "@/lib/planos";
 import { auth } from "@/auth";
+
+export const metadata: Metadata = {
+  title: "Planos e preços",
+  description:
+    "Grátis, Essencial ou Místico: escolha o quanto quer saber sobre o seu mapa astral. Todos os planos incluem cálculo astronômico real.",
+  openGraph: {
+    title: "Planos e preços · Lumina Astral",
+    description:
+      "Grátis, Essencial ou Místico: escolha o quanto quer saber sobre o seu mapa astral. Todos os planos incluem cálculo astronômico real.",
+    url: "/planos",
+  },
+};
 
 export default async function PlanosPage() {
   const session = await auth();
