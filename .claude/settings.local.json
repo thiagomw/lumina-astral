@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(npx --yes create-next-app@latest . --typescript --tailwind --app --eslint --src-dir --import-alias \"@/*\" --no-turbopack --use-npm)",
-      "Bash(mv claude.MD /tmp/claude.MD.bak)",
-      "Bash(mv claude.MD ../claude.MD.bak)"
-    ]
-  }
-}
