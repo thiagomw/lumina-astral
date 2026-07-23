@@ -5,7 +5,7 @@ import { ComoFunciona } from "@/components/landing/ComoFunciona";
 import { Features } from "@/components/landing/Features";
 import { PlanosPreview } from "@/components/landing/PlanosPreview";
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3001";
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001";
 
 const jsonLd = {
   "@context": "https://schema.org",

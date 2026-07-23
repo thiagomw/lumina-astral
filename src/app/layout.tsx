@@ -14,7 +14,7 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3001";
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001";
 
 const title = "Lumina Astral — Seu mapa astral, sua jornada";
 const description =

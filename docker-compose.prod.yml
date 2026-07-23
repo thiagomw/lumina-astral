@@ -17,12 +17,11 @@ services:
   migrate:
     build:
       context: .
-      target: builder
+      target: migrator
     env_file: .env.production
     depends_on:
       db:
         condition: service_healthy
-    command: npx prisma migrate deploy
     restart: "no"
 
   app:

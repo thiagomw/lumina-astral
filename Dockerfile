@@ -4,6 +4,15 @@ RUN apk add --no-cache libc6-compat openssl
 COPY package.json package-lock.json ./
 RUN npm ci
 
+FROM node:20-alpine AS migrator
+WORKDIR /app
+RUN apk add --no-cache openssl
+COPY --from=deps /app/node_modules ./node_modules
+COPY package.json package-lock.json ./
+COPY prisma ./prisma
+RUN npx prisma generate
+CMD ["npx", "prisma", "migrate", "deploy"]
+
 FROM node:20-alpine AS builder
 WORKDIR /app
 RUN apk add --no-cache openssl
